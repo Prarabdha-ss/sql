@@ -54,7 +54,27 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
 ```
-Your answer...
+Option 1: Overwrite (Type 1 Slowly Changing Dimension)
+
+In this design, the table only stores the customer’s current address. Whenever a customer moves, the old address is replaced with the new one.
+
+This approach works well in cases where only the most up-to-date address is important, such as delivering current orders or sending promotional material.
+
+Pros: The structure is simple, the table remains smaller, and queries are easy to write.
+
+Cons: Previous addresses are lost, so there’s no way to track where a customer lived before.
+
+Option 2: History Preserved (Type 2 Slowly Changing Dimension)
+
+Here, every time a customer changes their address, a new record is added to the table. Extra columns such as StartDate, EndDate, and IsCurrent are used to keep track of when each address was valid.
+
+When a customer moves, the old address record is updated with an end date and marked as no longer current. A new record is then added with the updated address and marked as the current one.
+
+This approach is useful when businesses need to analyze or keep track of customer history for example, studying sales trends in different regions or checking address changes for fraud prevention.
+
+Pros: Keeps a full history of customer addresses.
+
+Cons: The table grows larger and queries can become more complex since you need to account for date ranges or filter for the current record.
 ```
 
 ***
